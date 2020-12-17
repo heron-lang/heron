@@ -2,6 +2,7 @@ package scanner
 
 import (
 	"ares/src/token"
+	"fmt"
 	"testing"
 )
 
@@ -26,6 +27,7 @@ func TestScanner(t *testing.T) {
 
 	for _, expectedTok := range expected {
 		tok := l.NextToken()
+		fmt.Println(tok)
 		if tok.Type != expectedTok.Type {
 			t.Errorf("Unexpected token type: expected %v instead of %v", expectedTok.Type, tok.Type)
 		}

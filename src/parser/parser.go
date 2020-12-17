@@ -53,6 +53,7 @@ func (p *Parser) parseSelector() (selector ast.Selector, error error) {
 		p.nextToken() //{
 
 		if p.curToken.Type == token.LBRACE {
+			p.nextToken()                         //RULE NAME (skips LBRACE)
 			for p.curToken.Type != token.RBRACE { //Parse rule until it meets }
 				rule, err := p.parseRule()
 
@@ -76,8 +77,6 @@ func (p *Parser) parseSelector() (selector ast.Selector, error error) {
 }
 
 func (p *Parser) parseRule() (rule ast.Rule, err error) {
-	p.nextToken() //RULE NAME
-
 	if p.curToken.Type == token.IDENT {
 		rule.Name = p.curToken.Literal
 
@@ -90,11 +89,9 @@ func (p *Parser) parseRule() (rule ast.Rule, err error) {
 			p.nextToken() //SKIP SEMI-COLON
 		} else {
 			err = errors.New(fmt.Sprintf("Syntax Error: unexpected %v, expected rule value", p.curToken.Type))
-			return
 		}
 	} else {
 		err = errors.New(fmt.Sprintf("Syntax Error: unexpected %v, expected rule name", p.curToken.Type))
-		return
 	}
 
 	return
