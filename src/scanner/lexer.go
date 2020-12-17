@@ -28,14 +28,13 @@ func (l *Lexer) NextToken() token.Token {
 		tok = l.newToken(token.COLON)
 	case ';':
 		tok = l.newToken(token.SEMICOLON)
+	case 0:
+		tok.Literal = ""
+		tok.Type = token.EOF
 	default:
 		if l.isLetter() {
 			tok.Type = token.IDENT
 			tok.Literal = l.eat(l.isLetter)
-			return tok
-		} else if l.isDigit() {
-			tok.Type = token.INT
-			tok.Literal = l.eat(l.isDigit)
 			return tok
 		} else {
 			tok = l.newToken(token.ILLEGAL)

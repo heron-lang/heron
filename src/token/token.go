@@ -9,7 +9,6 @@ type Token struct {
 
 const (
 	IDENT = "IDENT"
-	INT   = "INT"
 
 	//Delimiters
 	SEMICOLON = ";"
@@ -19,4 +18,5 @@ const (
 	RBRACE = "}"
 
 	ILLEGAL = "ILLEGAL"
+	EOF     = "EOF"
 )
