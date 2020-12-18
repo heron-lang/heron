@@ -2,7 +2,7 @@ package parser
 
 import (
 	"ares/src/ast"
-	"ares/src/scanner"
+	"ares/src/lexer"
 	"ares/src/token"
 	"errors"
 	"fmt"
@@ -10,13 +10,13 @@ import (
 )
 
 type Parser struct {
-	l *scanner.Lexer
+	l *lexer.Lexer
 
 	curToken  token.Token
 	peekToken token.Token
 }
 
-func New(l *scanner.Lexer) *Parser {
+func New(l *lexer.Lexer) *Parser {
 	p := &Parser{l: l}
 
 	//read two so that curToken and peekToken are both set
@@ -46,30 +46,31 @@ func (p *Parser) ParseProgram() *ast.Program {
 }
 
 func (p *Parser) parseSelector() (selector ast.Selector, error error) {
-	if p.curToken.Type == token.IDENT {
-		//SELECTOR TEXT
-		selector.SelectorText = p.curToken.Literal
-
-		p.nextToken() //{
-
-		if p.curToken.Type == token.LBRACE {
-			p.nextToken()                         //RULE NAME (skips LBRACE)
-			for p.curToken.Type != token.RBRACE { //Parse rule until it meets }
-				rule, err := p.parseRule()
-
-				if err != nil {
-					error = err
-					return
-				}
-
-				selector.Rules = append(selector.Rules, rule)
-			}
+	for p.curToken.Type != token.LBRACE {
+		if p.curToken.Type == token.COLON || p.curToken.Type == token.IDENT {
+			selector.SelectorText += p.curToken.Literal
 		} else {
-			error = errors.New(fmt.Sprintf("Syntax Error: unexpected %v, expected opening brace", p.curToken.Type))
+			error = errors.New(fmt.Sprintf("Syntax Error: unexpected %v, expected selector", p.curToken.Type))
 			return
 		}
+
+		p.nextToken()
+	}
+
+	if p.curToken.Type == token.LBRACE {
+		p.nextToken()                         //RULE NAME (skips LBRACE)
+		for p.curToken.Type != token.RBRACE { //Parse rule until it meets }
+			rule, err := p.parseRule()
+
+			if err != nil {
+				error = err
+				return
+			}
+
+			selector.Rules = append(selector.Rules, rule)
+		}
 	} else {
-		error = errors.New(fmt.Sprintf("Syntax Error: unexpected %v, expected selector", p.curToken.Type))
+		error = errors.New(fmt.Sprintf("Syntax Error: unexpected %v, expected opening brace", p.curToken.Type))
 		return
 	}
 
@@ -80,10 +81,12 @@ func (p *Parser) parseRule() (rule ast.Rule, err error) {
 	if p.curToken.Type == token.IDENT {
 		rule.Name = p.curToken.Literal
 
+		p.nextToken() //COLON
 		p.nextToken() //RULE VALUE
 
 		if p.curToken.Type == token.IDENT {
 			rule.Value = p.curToken.Literal
+			p.nextToken() //SEMICOLON
 			p.nextToken() //RULE NAME
 		} else {
 			err = errors.New(fmt.Sprintf("Syntax Error: unexpected %v, expected rule value", p.curToken.Type))

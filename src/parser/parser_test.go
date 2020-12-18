@@ -2,13 +2,13 @@ package parser
 
 import (
 	"ares/src/ast"
-	"ares/src/scanner"
+	"ares/src/lexer"
 	"testing"
 )
 
 func Test_ParseProgram(t *testing.T) {
-	l := scanner.New(`
-	p {
+	l := lexer.New(`
+	p:hover {
        color: red;
 	}`)
 
@@ -17,7 +17,7 @@ func Test_ParseProgram(t *testing.T) {
 
 	expected := []ast.Selector{
 		{
-			SelectorText: "p",
+			SelectorText: "p:hover",
 			Rules: []ast.Rule{
 				{
 					Name:  "color",

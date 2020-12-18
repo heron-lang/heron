@@ -1,4 +1,4 @@
-package scanner
+package lexer
 
 import "ares/src/token"
 
@@ -34,14 +34,7 @@ func (l *Lexer) NextToken() token.Token {
 	default:
 		tok.Type = token.IDENT
 		tok.Literal = l.eat(l.isIdent)
-
-		/*if l.isLetter() {
-			tok.Type = token.IDENT
-			tok.Literal = l.eat(l.isLetter)
-			return tok
-		} else {
-			tok = l.newToken(token.ILLEGAL)
-		}*/
+		return tok //prevents program from reading next char
 	}
 
 	l.readChar()
@@ -49,9 +42,6 @@ func (l *Lexer) NextToken() token.Token {
 }
 
 func (l *Lexer) isIdent() bool {
-	//nxt := l.input[l.nextPosition]
-	////skip delimiters
-	//return nxt != '{' && nxt != '}' && nxt != ';' && nxt != ' ' && nxt != '\r'
 	return l.isLetter() || l.ch == '-' || l.ch == '*'
 }
 

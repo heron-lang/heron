@@ -2,8 +2,8 @@ package main
 
 import (
 	"ares/src/gen"
+	"ares/src/lexer"
 	"ares/src/parser"
-	"ares/src/scanner"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -23,7 +23,7 @@ func main() {
 		return
 	}
 
-	tokens := scanner.New(string(file))
+	tokens := lexer.New(string(file))
 
 	p := parser.New(tokens)
 	tree := p.ParseProgram()
