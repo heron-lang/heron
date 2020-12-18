@@ -33,7 +33,7 @@ func (l *Lexer) NextToken() token.Token {
 		tok.Type = token.EOF
 	default:
 		tok.Type = token.IDENT
-		tok.Literal = l.eat(l.untilDelim)
+		tok.Literal = l.eat(l.isIdent)
 
 		/*if l.isLetter() {
 			tok.Type = token.IDENT
@@ -48,10 +48,11 @@ func (l *Lexer) NextToken() token.Token {
 	return tok
 }
 
-func (l *Lexer) untilDelim() bool {
-	nxt := l.input[l.nextPosition]
-	//skip delimiters
-	return nxt != '{' && nxt != '}' && nxt != ':' && nxt != ';' && nxt != ' ' && nxt != '\r'
+func (l *Lexer) isIdent() bool {
+	//nxt := l.input[l.nextPosition]
+	////skip delimiters
+	//return nxt != '{' && nxt != '}' && nxt != ';' && nxt != ' ' && nxt != '\r'
+	return l.isLetter() || l.ch == '-' || l.ch == '*'
 }
 
 func (l *Lexer) readChar() {
@@ -70,7 +71,7 @@ func (l *Lexer) eat(check func() bool) string {
 	for check() {
 		l.readChar()
 	}
-	return l.input[start : l.position+1]
+	return l.input[start:l.position]
 }
 
 func (l *Lexer) newToken(tt token.TokenType) token.Token {

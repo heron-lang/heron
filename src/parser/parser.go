@@ -80,13 +80,11 @@ func (p *Parser) parseRule() (rule ast.Rule, err error) {
 	if p.curToken.Type == token.IDENT {
 		rule.Name = p.curToken.Literal
 
-		p.nextToken() //COLON
 		p.nextToken() //RULE VALUE
 
 		if p.curToken.Type == token.IDENT {
 			rule.Value = p.curToken.Literal
-			p.nextToken() //SKIP RULE VALUE
-			p.nextToken() //SKIP SEMI-COLON
+			p.nextToken() //RULE NAME
 		} else {
 			err = errors.New(fmt.Sprintf("Syntax Error: unexpected %v, expected rule value", p.curToken.Type))
 		}
