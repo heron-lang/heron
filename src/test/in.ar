@@ -1,0 +1,7 @@
+ul {
+    li {
+        color: purple;
+    }
+
+    background-color: blue;
+}
