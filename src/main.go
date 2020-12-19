@@ -23,12 +23,15 @@ func main() {
 		return
 	}
 
-	tokens := lexer.New(string(file))
+	scanner := lexer.New(string(file))
 
-	p := parser.New(tokens)
+	p := parser.New(scanner)
 	tree := p.ParseProgram()
 
-	generator := &gen.Gen{}
-	css := generator.Generate(tree)
-	fmt.Println(css)
+	//fmt.Println(tree)
+
+	generator := &gen.Gen{Program: tree}
+	generator.Generate()
+
+	fmt.Println(generator.Output)
 }

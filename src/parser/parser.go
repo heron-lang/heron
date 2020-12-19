@@ -45,12 +45,12 @@ func (p *Parser) ParseProgram() *ast.Program {
 	return program
 }
 
-func (p *Parser) parseSelector() (selector ast.Selector, error error) {
+func (p *Parser) parseSelector() (selector ast.Selector, err error) {
 	for p.curToken.Type != token.LBRACE {
 		if p.curToken.Type == token.COLON || p.curToken.Type == token.IDENT {
 			selector.SelectorText += p.curToken.Literal
 		} else {
-			error = errors.New(fmt.Sprintf("Syntax Error: unexpected %v, expected selector", p.curToken.Type))
+			err = errors.New(fmt.Sprintf("Syntax Error: unexpected %v, expected selector", p.curToken.Type))
 			return
 		}
 
@@ -58,19 +58,28 @@ func (p *Parser) parseSelector() (selector ast.Selector, error error) {
 	}
 
 	if p.curToken.Type == token.LBRACE {
-		p.nextToken()                         //RULE NAME (skips LBRACE)
+		p.nextToken()                         //RULE NAME
 		for p.curToken.Type != token.RBRACE { //Parse rule until it meets }
-			rule, err := p.parseRule()
-
-			if err != nil {
-				error = err
-				return
+			//This is disturbing nested curly braces by cutting off too early
+			switch p.peekToken.Type {
+			case token.COLON:
+				var rule ast.Rule
+				rule, err = p.parseRule()
+				selector.Rules = append(selector.Rules, rule)
+			case token.LBRACE:
+				var nested ast.Selector
+				nested, err = p.parseSelector()
+				selector.Nested = append(selector.Nested, nested)
 			}
 
-			selector.Rules = append(selector.Rules, rule)
+			if err != nil {
+				return
+			}
 		}
+
+		p.nextToken() //RULE NAME (skips RBRACE)
 	} else {
-		error = errors.New(fmt.Sprintf("Syntax Error: unexpected %v, expected opening brace", p.curToken.Type))
+		err = errors.New(fmt.Sprintf("Syntax Error: unexpected %v, expected opening brace", p.curToken.Type))
 		return
 	}
 
@@ -99,6 +108,8 @@ func (p *Parser) parseRule() (rule ast.Rule, err error) {
 }
 
 func (p *Parser) nextToken() {
+	//fmt.Println(p.curToken)
+
 	p.curToken = p.peekToken
 	p.peekToken = p.l.NextToken()
 }

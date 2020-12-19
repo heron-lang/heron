@@ -1,3 +1,10 @@
-*:hover {
-    background-color: green;
+ul {
+    li {
+        background-color: red;
+        p {
+            color: purple;
+        }
+    }
+
+    background-color: blue;
 }

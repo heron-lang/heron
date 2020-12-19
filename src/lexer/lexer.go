@@ -27,7 +27,7 @@ func (l *Lexer) NextToken() token.Token {
 	case ':':
 		tok = l.newToken(token.COLON)
 	case ';':
-		tok = l.newToken(token.SEMICOLON)
+		tok = l.newToken(token.EOS)
 	case 0:
 		tok.Literal = ""
 		tok.Type = token.EOF

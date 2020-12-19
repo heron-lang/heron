@@ -5,26 +5,28 @@ import (
 )
 
 type Gen struct {
+	Program *ast.Program
+	Output  string
 	curNode ast.Selector
 }
 
-func (g *Gen) Generate(program *ast.Program) string {
-	var css string
-
-	for _, selector := range program.Rules {
+func (g *Gen) Generate() {
+	for _, selector := range g.Program.Rules {
 		g.curNode = selector
 
-		css += g.genRules()
+		g.Output += g.genRules(g.curNode.SelectorText, g.curNode)
 	}
-
-	return css
 }
 
-func (g Gen) genRules() (css string) {
-	css += g.curNode.SelectorText + "{"
+func (g *Gen) genRules(selector string, node ast.Selector) (css string) {
+	css += selector + "{"
 
-	for _, rule := range g.curNode.Rules {
+	for _, rule := range node.Rules {
 		css += rule.Name + ":" + rule.Value + ";"
+	}
+
+	for _, nested := range node.Nested {
+		g.Output += g.genRules(selector+" "+nested.SelectorText, nested)
 	}
 
 	css += "}"

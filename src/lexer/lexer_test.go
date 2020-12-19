@@ -26,12 +26,13 @@ func TestScanner(t *testing.T) {
 		{Literal: "color", Type: token.IDENT},
 		{Literal: ":", Type: token.COLON},
 		{Literal: "red", Type: token.IDENT},
-		{Literal: ";", Type: token.SEMICOLON},
+		{Literal: ";", Type: token.EOS},
 
 		{Literal: "background-color", Type: token.IDENT},
 		{Literal: ":", Type: token.COLON},
 		{Literal: "blue", Type: token.IDENT},
-		{Literal: ";", Type: token.SEMICOLON},
+		{Literal: ";", Type: token.EOS},
+
 		{Literal: "}", Type: token.RBRACE},
 	}
 

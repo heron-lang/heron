@@ -11,12 +11,12 @@ const (
 	IDENT = "IDENT"
 
 	//Delimiters
+	EOS       = "EOS"
 	SEMICOLON = ";"
 	COLON     = ":"
 
 	LBRACE = "{"
 	RBRACE = "}"
 
-	ILLEGAL = "ILLEGAL"
-	EOF     = "EOF"
+	EOF = "EOF"
 )

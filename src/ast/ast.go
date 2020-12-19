@@ -11,8 +11,11 @@ type Rule struct {
 
 type Selector struct {
 	SelectorText string
-	Rules        []Rule
-	Loc          Loc
+
+	Nested []Selector
+	Rules  []Rule
+
+	Loc Loc
 }
 
 type Loc struct {
