@@ -3,14 +3,17 @@ package lexer
 import "ares/src/token"
 
 type Lexer struct {
-	input        string
+	input string
+
 	position     int
 	nextPosition int
-	ch           byte
+	loc          token.Loc
+
+	ch byte
 }
 
 func New(input string) *Lexer {
-	l := &Lexer{input: input}
+	l := &Lexer{input: input, loc: token.Loc{Row: 1, Col: 0}}
 	l.readChar()
 	return l
 }
@@ -33,6 +36,7 @@ func (l *Lexer) NextToken() token.Token {
 		tok.Type = token.EOF
 	default:
 		tok.Type = token.IDENT
+		tok.Loc = l.loc
 		tok.Literal = l.eat(l.isIdent)
 		return tok //prevents program from reading next char
 	}
@@ -49,6 +53,7 @@ func (l *Lexer) readChar() {
 	if l.nextPosition >= len(l.input) {
 		l.ch = 0
 	} else {
+		l.loc.Col++
 		l.ch = l.input[l.nextPosition]
 	}
 
@@ -65,12 +70,17 @@ func (l *Lexer) eat(check func() bool) string {
 }
 
 func (l *Lexer) newToken(tt token.TokenType) token.Token {
-	return token.Token{Type: tt, Literal: string(l.ch)}
+	return token.Token{Type: tt, Literal: string(l.ch), Loc: l.loc}
 }
 
 func (l *Lexer) skipWhitespace() {
 	for l.ch == ' ' || l.ch == '\t' || l.ch == '\r' || l.ch == '\n' {
 		l.readChar()
+
+		if l.ch == '\n' {
+			l.loc.Col = 0
+			l.loc.Row++
+		}
 	}
 }
 

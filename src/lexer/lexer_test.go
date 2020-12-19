@@ -8,9 +8,8 @@ import (
 
 func TestScanner(t *testing.T) {
 	input := `
-	selector:hover {
-		color: red;
-		background-color: blue;
+	ul {
+    	background-color blue;
 	}`
 
 	//TODO: add support for rule value that include whitespace

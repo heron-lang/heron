@@ -2,11 +2,10 @@ package parser
 
 import (
 	"ares/src/ast"
+	"ares/src/errors"
 	"ares/src/lexer"
 	"ares/src/token"
-	"errors"
 	"fmt"
-	"os"
 )
 
 type Parser struct {
@@ -34,8 +33,7 @@ func (p *Parser) ParseProgram() *ast.Program {
 		selector, err := p.parseSelector()
 
 		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
+			err.Print()
 		}
 
 		program.Rules = append(program.Rules, selector)
@@ -45,66 +43,83 @@ func (p *Parser) ParseProgram() *ast.Program {
 	return program
 }
 
-func (p *Parser) parseSelector() (selector ast.Selector, err error) {
+func (p *Parser) parseSelector() (selector ast.Selector, err *errors.Error) {
 	for p.curToken.Type != token.LBRACE {
 		if p.curToken.Type == token.COLON || p.curToken.Type == token.IDENT {
 			selector.SelectorText += p.curToken.Literal
 		} else {
-			err = errors.New(fmt.Sprintf("Syntax Error: unexpected %v, expected selector", p.curToken.Type))
+			err = p.newError(fmt.Sprintf("unexpected %v, expected selector", p.curToken.Type))
 			return
 		}
 
 		p.nextToken()
 	}
 
-	if p.curToken.Type == token.LBRACE {
-		p.nextToken()                         //RULE NAME
-		for p.curToken.Type != token.RBRACE { //Parse rule until it meets }
-			//This is disturbing nested curly braces by cutting off too early
-			switch p.peekToken.Type {
-			case token.COLON:
-				var rule ast.Rule
-				rule, err = p.parseRule()
-				selector.Rules = append(selector.Rules, rule)
-			case token.LBRACE:
-				var nested ast.Selector
-				nested, err = p.parseSelector()
-				selector.Nested = append(selector.Nested, nested)
-			}
-
-			if err != nil {
-				return
-			}
-		}
-
-		p.nextToken() //RULE NAME (skips RBRACE)
-	} else {
-		err = errors.New(fmt.Sprintf("Syntax Error: unexpected %v, expected opening brace", p.curToken.Type))
+	if err = p.expectToken(token.LBRACE); err != nil {
 		return
 	}
+
+	p.nextToken()                         //RULE NAME
+	for p.curToken.Type != token.RBRACE { //Parse rule until it meets }
+		switch p.peekToken.Type {
+		case token.COLON:
+			var rule ast.Rule
+			rule, err = p.parseRule()
+			selector.Rules = append(selector.Rules, rule)
+		case token.LBRACE:
+			var nested ast.Selector
+			nested, err = p.parseSelector()
+			selector.Nested = append(selector.Nested, nested)
+		default:
+			err = p.newError(fmt.Sprintf("unexpected %v, expected a colon or right brace", p.peekToken.Type))
+			return
+		}
+
+		if err != nil {
+			return
+		}
+	}
+
+	p.nextToken() //RULE NAME (skips RBRACE)
 
 	return
 }
 
-func (p *Parser) parseRule() (rule ast.Rule, err error) {
-	if p.curToken.Type == token.IDENT {
-		rule.Name = p.curToken.Literal
-
-		p.nextToken() //COLON
-		p.nextToken() //RULE VALUE
-
-		if p.curToken.Type == token.IDENT {
-			rule.Value = p.curToken.Literal
-			p.nextToken() //SEMICOLON
-			p.nextToken() //RULE NAME
-		} else {
-			err = errors.New(fmt.Sprintf("Syntax Error: unexpected %v, expected rule value", p.curToken.Type))
-		}
-	} else {
-		err = errors.New(fmt.Sprintf("Syntax Error: unexpected %v, expected rule name", p.curToken.Type))
+func (p *Parser) parseRule() (rule ast.Rule, err *errors.Error) {
+	if err = p.expectToken(token.IDENT); err != nil {
+		return
 	}
 
+	rule.Name = p.curToken.Literal
+
+	p.nextToken() //COLON
+	p.nextToken() //RULE VALUE
+
+	if err = p.expectToken(token.IDENT); err != nil {
+		return
+	}
+
+	rule.Value = p.curToken.Literal
+	p.nextToken() //SEMICOLON
+	p.nextToken() //RULE NAME
+
 	return
+}
+
+func (p *Parser) expectToken(expected token.TokenType) *errors.Error {
+	if p.curToken.Type != expected {
+		return p.newError(fmt.Sprintf("unexpected %v, expected %v", p.curToken.Type, expected))
+	}
+
+	return nil
+}
+
+func (p *Parser) newError(msg string) *errors.Error {
+	return &errors.Error{
+		Msg:  msg,
+		Loc:  p.curToken.Loc,
+		Type: errors.SyntaxError,
+	}
 }
 
 func (p *Parser) nextToken() {

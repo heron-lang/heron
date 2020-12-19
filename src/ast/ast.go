@@ -1,5 +1,7 @@
 package ast
 
+import "ares/src/token"
+
 type Program struct {
 	Rules []Selector
 }
@@ -15,10 +17,5 @@ type Selector struct {
 	Nested []Selector
 	Rules  []Rule
 
-	Loc Loc
-}
-
-type Loc struct {
-	Row int
-	Col int
+	Loc token.Loc
 }

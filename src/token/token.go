@@ -5,10 +5,16 @@ type TokenType string
 type Token struct {
 	Type    TokenType
 	Literal string
+	Loc     Loc
+}
+
+type Loc struct {
+	Row int
+	Col int
 }
 
 const (
-	IDENT = "IDENT"
+	IDENT = "identifier"
 
 	//Delimiters
 	EOS       = "EOS"
