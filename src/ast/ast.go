@@ -1,6 +1,6 @@
 package ast
 
-import "ares/src/token"
+import "heron/src/token"
 
 type Program struct {
 	Rules []Selector

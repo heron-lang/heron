@@ -1,11 +1,11 @@
 package parser
 
 import (
-	"ares/src/ast"
-	"ares/src/errors"
-	"ares/src/lexer"
-	"ares/src/token"
 	"fmt"
+	"heron/src/ast"
+	"heron/src/errors"
+	"heron/src/lexer"
+	"heron/src/token"
 )
 
 type Parser struct {

@@ -1,7 +1,7 @@
 package gen
 
 import (
-	"ares/src/ast"
+	"heron/src/ast"
 )
 
 type Gen struct {

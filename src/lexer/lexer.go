@@ -1,6 +1,6 @@
 package lexer
 
-import "ares/src/token"
+import "heron/src/token"
 
 type Lexer struct {
 	input string
@@ -46,7 +46,7 @@ func (l *Lexer) NextToken() token.Token {
 }
 
 func (l *Lexer) isIdent() bool {
-	return l.isLetter() || l.ch == '-' || l.ch == '*'
+	return l.isLetter() || l.ch == '-' || l.ch == '*' || l.ch == '.' || l.ch == '#'
 }
 
 func (l *Lexer) readChar() {

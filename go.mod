@@ -1,3 +1,3 @@
-module ares
+module heron
 
 go 1.15

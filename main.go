@@ -1,10 +1,10 @@
 package main
 
 import (
-	"ares/src/gen"
-	"ares/src/lexer"
-	"ares/src/parser"
 	"fmt"
+	"heron/src/gen"
+	"heron/src/lexer"
+	"heron/src/parser"
 	"io/ioutil"
 	"os"
 )

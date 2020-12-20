@@ -1,8 +1,8 @@
 package errors
 
 import (
-	"ares/src/token"
 	"fmt"
+	"heron/src/token"
 	"os"
 )
 
