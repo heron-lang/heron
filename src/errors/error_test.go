@@ -1,7 +1,7 @@
 package errors
 
 import (
-	"ares/src/token"
+	"heron/src/token"
 	"testing"
 )
 

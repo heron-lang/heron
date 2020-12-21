@@ -1,6 +1,9 @@
 package lexer
 
-import "heron/src/token"
+import (
+	"heron/src/errors"
+	"heron/src/token"
+)
 
 type Lexer struct {
 	input string
@@ -23,6 +26,19 @@ func (l *Lexer) NextToken() token.Token {
 	l.skipWhitespace()
 
 	switch l.ch {
+	case '/':
+		l.readChar()
+		if l.ch == '/' {
+			for l.ch != '\n' {
+				l.readChar()
+			}
+
+			l.newLine()
+			return l.NextToken()
+		} else {
+			err := &errors.Error{Msg: "illegal character", Type: errors.SyntaxError, Loc: l.loc}
+			err.Print()
+		}
 	case '{':
 		tok = l.newToken(token.LBRACE)
 	case '}':
@@ -32,8 +48,9 @@ func (l *Lexer) NextToken() token.Token {
 	case ';':
 		tok = l.newToken(token.EOS)
 	case 0:
-		tok.Literal = ""
+		tok.Literal = "EOF"
 		tok.Type = token.EOF
+		return tok
 	default:
 		tok.Type = token.IDENT
 		tok.Loc = l.loc
@@ -43,10 +60,6 @@ func (l *Lexer) NextToken() token.Token {
 
 	l.readChar()
 	return tok
-}
-
-func (l *Lexer) isIdent() bool {
-	return l.isLetter() || l.ch == '-' || l.ch == '*' || l.ch == '.' || l.ch == '#'
 }
 
 func (l *Lexer) readChar() {
@@ -78,10 +91,18 @@ func (l *Lexer) skipWhitespace() {
 		l.readChar()
 
 		if l.ch == '\n' {
-			l.loc.Col = 0
-			l.loc.Row++
+			l.newLine()
 		}
 	}
+}
+
+func (l *Lexer) newLine() {
+	l.loc.Col = 0
+	l.loc.Row++
+}
+
+func (l *Lexer) isIdent() bool {
+	return l.isLetter() || l.ch == '-' || l.ch == '*' || l.ch == '.' || l.ch == '#'
 }
 
 func (l *Lexer) isLetter() bool {
