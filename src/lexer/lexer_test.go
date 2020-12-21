@@ -8,11 +8,19 @@ import (
 
 func TestScanner(t *testing.T) {
 	input := `
+	/*
+		IGNORE ME!
 	
 
+
+
+*/
+
+	//ignore this as well
+
 	selector:hover {
-    	background-color: blue; //ignore this
-	} //ignore this as well`
+    	background-color: blue;
+	}`
 
 	//TODO: add support for rule value that include whitespace
 	l := New(input)

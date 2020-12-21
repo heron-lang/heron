@@ -28,14 +28,25 @@ func (l *Lexer) NextToken() token.Token {
 	switch l.ch {
 	case '/':
 		l.readChar()
-		if l.ch == '/' {
+
+		switch l.ch {
+		case '/':
 			for l.ch != '\n' {
 				l.readChar()
 			}
 
-			l.newLine()
 			return l.NextToken()
-		} else {
+		case '*':
+			l.readChar() //skip asterisk
+			for l.ch != '*' && l.input[l.nextPosition] != '/' {
+				l.readChar()
+			}
+
+			l.readChar() //skip asterisk
+			l.readChar() //skip backslash
+
+			return l.NextToken()
+		default:
 			err := &errors.Error{Msg: "illegal character", Type: errors.SyntaxError, Loc: l.loc}
 			err.Print()
 		}
@@ -72,6 +83,11 @@ func (l *Lexer) readChar() {
 
 	l.position = l.nextPosition
 	l.nextPosition++
+
+	if l.ch == '\n' {
+		l.loc.Col = 0
+		l.loc.Row++
+	}
 }
 
 func (l *Lexer) eat(check func() bool) string {
@@ -89,16 +105,7 @@ func (l *Lexer) newToken(tt token.TokenType) token.Token {
 func (l *Lexer) skipWhitespace() {
 	for l.ch == ' ' || l.ch == '\t' || l.ch == '\r' || l.ch == '\n' {
 		l.readChar()
-
-		if l.ch == '\n' {
-			l.newLine()
-		}
 	}
-}
-
-func (l *Lexer) newLine() {
-	l.loc.Col = 0
-	l.loc.Row++
 }
 
 func (l *Lexer) isIdent() bool {
