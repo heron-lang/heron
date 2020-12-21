@@ -1,7 +1,6 @@
 <div style="text-align: center">
-    <img alt='heron' src="https://raw.githubusercontent.com/PoseidonCoder/heron/main/small_logo.png" />
-
-## a *powerful* CSS preprocessor
+<img alt='heron' src="https://raw.githubusercontent.com/PoseidonCoder/heron/main/small_logo.png" />
+<h1>a <em>powerful</em> CSS preprocessor</h1>
 
 ![GoV1.15](https://img.shields.io/github/go-mod/go-version/PoseidonCoder/heron?style=for-the-badge)
 ![license: GPL-3.0](https://img.shields.io/github/license/PoseidonCoder/heron?style=for-the-badge)
@@ -10,18 +9,14 @@
 ![contributions are welcome](https://img.shields.io/badge/contributions-welcome-orange.svg?style=for-the-badge)
 </div>
 
-___
+_____
 
 
 ## Features
 
-___
-
 * nested selectors
 
 ## Planned Features
-
-___
 
 * comments
 * variables
@@ -30,7 +25,6 @@ ___
 
 ## Installation
 
-___
 #### If you have windows, you can just download the installer from [Github releases](https://github.com/PoseidonCoder/heron/releases)
 
 #### If you don't use windows:
@@ -43,8 +37,6 @@ Run `go install github.com/PoseidonCoder/heron` in the command line. This will f
 #### _PATH is a system variable that contains programs which are allowed to run anywhere from the command line_
 
 ## Usage
-
-___
 
 ```yaml
 input.he
@@ -80,4 +72,4 @@ ul li{color:purple;}ul{background-color:blue;}
 ```
 ___
 
-## *Note: this project is still a work in progress and therefore still has many flaws*
+### *Note: this project is still a work in progress and therefore still has many flaws*
