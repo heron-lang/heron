@@ -15,7 +15,7 @@
 
 * [Features](#features)
 * [Planned features](#planned-features)
-* [Installation for Windows](#if-you-have-windows-you-can-just-download-the-installer-from-github-releaseshttpsgithubcomposeidoncoderheronreleases)
+* [Installation for Windows](#if-you-have-windows-you-can-just-download-the-installer-from-github-releases)
 * [Installation for other operating systems](#if-you-dont-use-windows)
 * [Installation with Go CLI](#or-if-you-have-go)
 * [Usage](#usage)
@@ -63,8 +63,6 @@ ul {
 }
 ```
 
-___
-
 To compile this bit of Heron code run the following in your terminal:
 
 ```yaml
@@ -77,20 +75,12 @@ heron input.he output.css
 
 Heron will automatically create `output.css` if the output file is not found
 
-___
-
 ```yaml
 output.css
 ```
 
 ```css
-ul li {
-    color: purple;
-}
-
-ul {
-    background-color: blue;
-}
+ul li {color:purple;}ul{background-color: blue;}
 ```
 
 ### *Note: this project is still a work in progress and therefore still has many flaws*
