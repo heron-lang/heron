@@ -13,20 +13,21 @@
 
 ## Table of Contents
 
-* [Features](#features)
+* [Features](#advantages)
 * [Planned features](#planned-features)
-* [Installation for Windows](#if-you-have-windows-you-can-just-download-the-installer-from-github-releases)
+* [Installation for Windows](#if-you-have-windows-you-can-just-download-the-installer-from-github-releaseshttpsgithubcomposeidoncoderheronreleases)
 * [Installation for other operating systems](#if-you-dont-use-windows)
 * [Installation with Go CLI](#or-if-you-have-go)
 * [Usage](#usage)
 
-## Features
+## Advantages
 
-* nested selectors
+* creates small and compact CSS 
+* supports nested selectors
+* single-line ***and*** multi-line comments
 
 ## Planned Features
 
-* comments
 * variables
 * mixins
 * standard library
@@ -56,10 +57,10 @@ input.he
 ```
 ul {
     li {
-        color: purple;
+        color: purple; //the text of the list items within this list will be purple
     }
 
-    background-color: blue;
+    background-color: blue; //the unordered list will have a blue background
 }
 ```
 
