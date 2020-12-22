@@ -1,19 +1,19 @@
-package gen
+package compiler
 
 import (
 	"heron/src/ast"
 	"strings"
 )
 
-//Gen represents the compiler
-type Gen struct {
+//Compiler represents the compiler
+type Compiler struct {
 	Program *ast.Program
 	Output  strings.Builder
 	curNode ast.Selector
 }
 
 //Generate compiles the AST
-func (g *Gen) Generate() {
+func (g *Compiler) Generate() {
 	for _, selector := range g.Program.Rules {
 		g.curNode = selector
 
@@ -21,7 +21,7 @@ func (g *Gen) Generate() {
 	}
 }
 
-func (g *Gen) genRules(selector string, node ast.Selector) string {
+func (g *Compiler) genRules(selector string, node ast.Selector) string {
 	var css strings.Builder
 	css.WriteString(selector + "{")
 
