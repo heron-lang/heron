@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"heron/src/gen"
+	"heron/src/compiler"
 	"heron/src/lexer"
 	"heron/src/parser"
 	"io/ioutil"
@@ -23,7 +23,7 @@ func main() {
 		return
 	}
 
-	compiled := compileAres(string(inputFile))
+	compiled := compileHeron(inputFile)
 	fmt.Println("Successfully compiled!")
 
 	createOutFile()
@@ -66,11 +66,11 @@ func writeOut(output strings.Builder) {
 	defer file.Close()
 }
 
-func compileAres(input string) strings.Builder {
+func compileHeron(input []byte) strings.Builder {
 	p := parser.New(lexer.New(input))
 	tree := p.ParseProgram()
 
-	generator := &gen.Gen{Program: tree}
+	generator := &compiler.Compiler{Program: tree}
 	generator.Generate()
 
 	return generator.Output
