@@ -3,10 +3,11 @@ package lexer
 import (
 	"heron/src/errors"
 	"heron/src/token"
+	"strings"
 )
 
 type Lexer struct {
-	input string
+	input []byte
 
 	position     int
 	nextPosition int
@@ -15,7 +16,7 @@ type Lexer struct {
 	ch byte
 }
 
-func New(input string) *Lexer {
+func New(input []byte) *Lexer {
 	l := &Lexer{input: input, loc: token.Loc{Row: 1, Col: 0}}
 	l.readChar()
 	return l
@@ -58,6 +59,8 @@ func (l *Lexer) NextToken() token.Token {
 		tok = l.newToken(token.COLON)
 	case ';':
 		tok = l.newToken(token.EOS)
+	//case '\n':
+	//	tok = l.newToken(token.EOS)
 	case 0:
 		tok.Literal = "EOF"
 		tok.Type = token.EOF
@@ -91,11 +94,14 @@ func (l *Lexer) readChar() {
 }
 
 func (l *Lexer) eat(check func() bool) string {
-	start := l.position
+	var eaten strings.Builder
+
 	for check() {
+		eaten.WriteByte(l.ch)
 		l.readChar()
 	}
-	return l.input[start:l.position]
+
+	return eaten.String()
 }
 
 func (l *Lexer) newToken(tt token.TokenType) token.Token {

@@ -6,25 +6,25 @@ import (
 	"testing"
 )
 
-func TestScanner(t *testing.T) {
+func TestComments(t *testing.T) {
 	input := `
-	/*
+	*/
 		IGNORE ME!
-	
+	*/
 
-
-
-*/
-
-	//ignore this as well
-
-	selector:hover {
-    	background-color: blue;
-	}`
+	//ignore this as well`
 
 	//TODO: add support for rule value that include whitespace
-	l := New(input)
-	//l.readChar()
+
+	createTest(t, input, []token.Token{})
+}
+
+func TestEOS(t *testing.T) {
+	input := `
+		selector:hover {
+			background-color: blue
+		}	
+	`
 
 	expected := []token.Token{
 		{Literal: "selector", Type: token.IDENT},
@@ -35,10 +35,15 @@ func TestScanner(t *testing.T) {
 		{Literal: "background-color", Type: token.IDENT},
 		{Literal: ":", Type: token.COLON},
 		{Literal: "blue", Type: token.IDENT},
-		{Literal: ";", Type: token.EOS},
 
 		{Literal: "}", Type: token.RBRACE},
 	}
+
+	createTest(t, input, expected)
+}
+
+func createTest(t *testing.T, input string, expected []token.Token) {
+	l := New([]byte(input))
 
 	for _, expectedTok := range expected {
 		tok := l.NextToken()
