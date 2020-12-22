@@ -7,6 +7,7 @@ import (
 	"heron/src/parser"
 	"io/ioutil"
 	"os"
+	"strings"
 )
 
 func main() {
@@ -46,7 +47,7 @@ func createOutFile() {
 	}
 }
 
-func writeOut(output string) {
+func writeOut(output strings.Builder) {
 	file, err := os.OpenFile(os.Args[2], os.O_RDWR, 0644)
 	fmt.Println("Writing output...")
 
@@ -56,7 +57,7 @@ func writeOut(output string) {
 		return
 	}
 
-	if _, err = file.Write([]byte(output)); err != nil {
+	if _, err = file.Write([]byte(output.String())); err != nil {
 		fmt.Println("There was an error writing to that file")
 		fmt.Println(err)
 		return
@@ -65,7 +66,7 @@ func writeOut(output string) {
 	defer file.Close()
 }
 
-func compileAres(input string) string {
+func compileAres(input string) strings.Builder {
 	p := parser.New(lexer.New(input))
 	tree := p.ParseProgram()
 
