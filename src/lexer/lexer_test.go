@@ -22,7 +22,7 @@ func TestComments(t *testing.T) {
 func TestEOS(t *testing.T) {
 	input := `
 		selector:hover {
-			background-color: blue
+			font: 100%
 		}	
 	`
 
@@ -32,9 +32,32 @@ func TestEOS(t *testing.T) {
 		{Literal: "hover", Type: token.IDENT},
 		{Literal: "{", Type: token.LBRACE},
 
-		{Literal: "background-color", Type: token.IDENT},
+		{Literal: "font", Type: token.IDENT},
 		{Literal: ":", Type: token.COLON},
-		{Literal: "blue", Type: token.IDENT},
+		{Literal: "100%", Type: token.IDENT},
+
+		{Literal: "}", Type: token.RBRACE},
+	}
+
+	createTest(t, input, expected)
+}
+
+func TestNumbers(t *testing.T) {
+	input := `
+		selector:hover {
+			font: 100%
+		}	
+	`
+
+	expected := []token.Token{
+		{Literal: "selector", Type: token.IDENT},
+		{Literal: ":", Type: token.COLON},
+		{Literal: "hover", Type: token.IDENT},
+		{Literal: "{", Type: token.LBRACE},
+
+		{Literal: "font", Type: token.IDENT},
+		{Literal: ":", Type: token.COLON},
+		{Literal: "100%", Type: token.IDENT},
 
 		{Literal: "}", Type: token.RBRACE},
 	}

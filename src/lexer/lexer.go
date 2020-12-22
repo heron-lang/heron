@@ -115,9 +115,13 @@ func (l *Lexer) skipWhitespace() {
 }
 
 func (l *Lexer) isIdent() bool {
-	return l.isLetter() || l.ch == '-' || l.ch == '*' || l.ch == '.' || l.ch == '#'
+	return l.isLetter() || l.isNumber() || l.ch == '-' || l.ch == '*' || l.ch == '#' || l.ch == '_' || l.ch == '%'
 }
 
 func (l *Lexer) isLetter() bool {
-	return 'a' <= l.ch && l.ch <= 'z' || 'A' <= l.ch && l.ch <= 'Z' || l.ch == '_'
+	return 'a' <= l.ch && l.ch <= 'z' || 'A' <= l.ch && l.ch <= 'Z'
+}
+
+func (l Lexer) isNumber() bool {
+	return ('0' <= l.ch && l.ch <= '9') || l.ch == '.'
 }
