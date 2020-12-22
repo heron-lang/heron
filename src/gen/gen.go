@@ -5,12 +5,14 @@ import (
 	"strings"
 )
 
+//Gen represents the compiler
 type Gen struct {
 	Program *ast.Program
 	Output  strings.Builder
 	curNode ast.Selector
 }
 
+//Generate compiles the AST
 func (g *Gen) Generate() {
 	for _, selector := range g.Program.Rules {
 		g.curNode = selector

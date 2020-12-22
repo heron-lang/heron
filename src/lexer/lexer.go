@@ -6,6 +6,7 @@ import (
 	"strings"
 )
 
+//Lexer is a structure that represents the scanner
 type Lexer struct {
 	input []byte
 
@@ -16,12 +17,14 @@ type Lexer struct {
 	ch byte
 }
 
+//New creates new lexer from input
 func New(input []byte) *Lexer {
 	l := &Lexer{input: input, loc: token.Loc{Row: 1, Col: 0}}
 	l.readChar()
 	return l
 }
 
+//NextToken creates new token and advances characters
 func (l *Lexer) NextToken() token.Token {
 	var tok token.Token
 	l.skipWhitespace()

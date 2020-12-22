@@ -8,6 +8,7 @@ import (
 	"heron/src/token"
 )
 
+//Parser represents the program parser
 type Parser struct {
 	l *lexer.Lexer
 
@@ -15,6 +16,7 @@ type Parser struct {
 	peekToken token.Token
 }
 
+//New creates a new parser
 func New(l *lexer.Lexer) *Parser {
 	p := &Parser{l: l}
 
@@ -25,6 +27,7 @@ func New(l *lexer.Lexer) *Parser {
 	return p
 }
 
+//ParseProgram creates the programs AST (Abstract Syntax Tree)
 func (p *Parser) ParseProgram() *ast.Program {
 	program := &ast.Program{}
 	program.Rules = []ast.Selector{} //makes sure that the rules are not null
@@ -123,8 +126,6 @@ func (p *Parser) newError(msg string) *errors.Error {
 }
 
 func (p *Parser) nextToken() {
-	//fmt.Println(p.curToken)
-
 	p.curToken = p.peekToken
 	p.peekToken = p.l.NextToken()
 }

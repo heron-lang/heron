@@ -1,20 +1,20 @@
 package parser
 
 import (
-	"ares/src/ast"
-	"ares/src/lexer"
+	"heron/src/ast"
+	"heron/src/lexer"
 	"testing"
 )
 
 func Test_ParseProgram(t *testing.T) {
-	l := lexer.New(`
+	l := lexer.New([]byte(`
 	ul {
 		li {
 			color: red;
 		}
 
 		background-color: blue;
-	}`)
+	}`))
 
 	p := New(l)
 	tree := p.ParseProgram()
