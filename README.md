@@ -6,8 +6,8 @@
 ![license: GPL-3.0](https://img.shields.io/github/license/PoseidonCoder/heron?style=for-the-badge)
 ![](https://img.shields.io/github/commit-activity/m/PoseidonCoder/heron.svg?style=for-the-badge)
 ![](https://img.shields.io/github/last-commit/PoseidonCoder/heron.svg?style=for-the-badge)
-![contributions are welcome](https://img.shields.io/badge/contributions-welcome-orange.svg?style=for-the-badge)
 ![codacy grade: B](https://img.shields.io/codacy/grade/1ee92d90d52b4b6e822345c7d5462be2?style=for-the-badge)
+![contributions are welcome](https://img.shields.io/badge/contributions-welcome-orange.svg?style=for-the-badge)
 
 # a *powerful* CSS preprocessor
 
@@ -36,19 +36,19 @@
 
 ## Installation
 
-#### If you have windows, you can just download the installer from [Github releases](https://github.com/PoseidonCoder/heron/releases)
+### If you have windows, you can just download the installer from [Github releases](https://github.com/PoseidonCoder/heron/releases)
 
-#### If you don't use windows:
+### If you don't use windows:
 
-* [install the raw executable from the `dist` folder](https://github.com/PoseidonCoder/heron/tree/main/dist)
-* To use the executable anywhere from the command line, [add it to your PATH](https://katiek2.github.io/path-doc/)
+*  [install the raw executable from the `dist` folder](https://github.com/PoseidonCoder/heron/tree/main/dist)
+*  To use the executable anywhere from the command line, [add it to your PATH](https://katiek2.github.io/path-doc/)
 
-#### Or, if you have Go:
+### Or, if you have Go:
 
 Run `go install github.com/PoseidonCoder/heron` in the command line. This will fetch the package, compile the project,
 and add it to your [PATH](https://katiek2.github.io/path-doc/)
 
-#### _PATH is a system variable that contains programs which are allowed to run anywhere from the command line_
+### *PATH is a system variable that contains programs which are allowed to run anywhere from the command line*
 
 ## Usage
 
@@ -56,7 +56,7 @@ and add it to your [PATH](https://katiek2.github.io/path-doc/)
 input.he
 ```
 
-```
+<pre><code>
 ul {
     li {
         color: purple; //the text of the list items within this list will be purple
@@ -64,7 +64,7 @@ ul {
 
     background-color: blue; //the unordered list will have a blue background
 }
-```
+</code></pre>
 
 To compile this bit of Heron code run the following in your terminal:
 
@@ -83,7 +83,13 @@ output.css
 ```
 
 ```css
-ul li {color:purple;}ul{background-color: blue;}
+ul li {
+    color: purple;
+}
+
+ul {
+    background-color: blue;
+}
 ```
 
 ### *Note: this project is still a work in progress and therefore still has many flaws*
