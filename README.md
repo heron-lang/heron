@@ -7,13 +7,15 @@
 ![](https://img.shields.io/github/commit-activity/m/PoseidonCoder/heron.svg?style=for-the-badge)
 ![](https://img.shields.io/github/last-commit/PoseidonCoder/heron.svg?style=for-the-badge)
 ![contributions are welcome](https://img.shields.io/badge/contributions-welcome-orange.svg?style=for-the-badge)
+![codacy grade: B](https://img.shields.io/codacy/grade/1ee92d90d52b4b6e822345c7d5462be2?style=for-the-badge)
 
 # a *powerful* CSS preprocessor
+
 </div>
 
 ## Table of Contents
 
-* [Features](#advantages)
+* [Advantages](#advantages)
 * [Planned features](#planned-features)
 * [Installation for Windows](#if-you-have-windows-you-can-just-download-the-installer-from-github-releaseshttpsgithubcomposeidoncoderheronreleases)
 * [Installation for other operating systems](#if-you-dont-use-windows)
@@ -22,7 +24,7 @@
 
 ## Advantages
 
-* creates small and compact CSS 
+* creates small and compact CSS
 * supports nested selectors
 * single-line ***and*** multi-line comments
 
