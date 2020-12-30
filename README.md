@@ -15,24 +15,24 @@
 
 ## Table of Contents
 
-  *  [Advantages](#advantages)
-  *  [Planned features](#planned-features)
-  *  [Installation for Windows](#if-you-have-windows-you-can-just-download-the-installer-from-github-releaseshttpsgithubcomposeidoncoderheronreleases)
-  *  [Installation for other operating systems](#if-you-dont-use-windows)
-  *  [Installation with Go CLI](#or-if-you-have-go)
-  *  [Usage](#usage)
+*  [Advantages](#advantages)
+*  [Planned features](#planned-features)
+*  [Installation for Windows](#if-you-have-windows-you-can-just-download-the-installer-from-github-releaseshttpsgithubcomposeidoncoderheronreleases)
+*  [Installation for other operating systems](#if-you-dont-use-windows)
+*  [Installation with Go CLI](#or-if-you-have-go)
+*  [Usage](#usage)
 
 ## Advantages
 
-  *  creates small and compact CSS
-  *  supports nested selectors
-  *  single-line ***and*** multi-line comments
+*    creates small and compact CSS
+*    supports nested selectors
+*    single-line ***and*** multi-line comments
 
 ## Planned Features
 
-  *  variables
-  *  mixins
-  *  standard library
+*    variables
+*    mixins
+*    standard library
 
 ## Installation
 
@@ -40,8 +40,8 @@
 
 ### If you don't use windows
 
-  *  [install the raw executable from the `dist` folder](https://github.com/PoseidonCoder/heron/tree/main/dist)
-  *  To use the executable anywhere from the command line, [add it to your PATH](https://katiek2.github.io/path-doc/)
+*    [install the raw executable from the `dist` folder](https://github.com/PoseidonCoder/heron/tree/main/dist)
+*    To use the executable anywhere from the command line, [add it to your PATH](https://katiek2.github.io/path-doc/)
 
 ### Or, if you have Go
 
