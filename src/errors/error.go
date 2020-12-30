@@ -7,9 +7,11 @@ import (
 )
 
 const (
+	//SyntaxError is an ErrorType that's intended for errors related to syntax/grammar
 	SyntaxError = "Syntax Error"
 )
 
+//ErrorType represents the type of error
 type ErrorType string
 
 //Error is an organized and consistent representation of an error message
