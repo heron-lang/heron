@@ -15,12 +15,12 @@
 
 ## Table of Contents
 
-*  [Advantages](#advantages)
-*  [Planned features](#planned-features)
-*  [Installation for Windows](#if-you-have-windows-you-can-just-download-the-installer-from-github-releaseshttpsgithubcomposeidoncoderheronreleases)
-*  [Installation for other operating systems](#if-you-dont-use-windows)
-*  [Installation with Go CLI](#or-if-you-have-go)
-*  [Usage](#usage)
+*    [Advantages](#advantages)
+*    [Planned features](#planned-features)
+*    [Installation for Windows](#if-you-have-windows-you-can-just-download-the-installer-from-github-releaseshttpsgithubcomposeidoncoderheronreleases)
+*    [Installation for other operating systems](#if-you-dont-use-windows)
+*    [Installation with Go CLI](#or-if-you-have-go)
+*    [Usage](#usage)
 
 ## Advantages
 
@@ -91,5 +91,16 @@ ul {
     background-color: blue;
 }
 ```
+
+
+## Contributing to Heron *(I can't do this all by myself)*
+
+1. Fork this repository.
+2. Create a branch: `git checkout -b <branch_name>`.
+3. Make your changes and commit them: `git commit -m '<commit_message>'`
+4. Push to the original branch: `git push origin <project_name>/<location>`
+5. Create the pull request.
+
+Alternatively see the GitHub documentation on [creating a pull request](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request).
 
 ### *Note: this project is still a work in progress and therefore still has many flaws*
