@@ -2,6 +2,8 @@ package compiler
 
 import (
 	"heron/src/ast"
+	"heron/src/lexer"
+	"heron/src/parser"
 	"strings"
 )
 
@@ -12,16 +14,16 @@ type Compiler struct {
 	curNode ast.Selector
 }
 
-//Generate compiles the AST
-func (g *Compiler) Generate() {
+//Compile generates the corresponding CSS from the AST
+func (g *Compiler) Compile() {
 	for _, selector := range g.Program.Rules {
 		g.curNode = selector
 
-		g.Output.WriteString(g.genRules(g.curNode.SelectorText, g.curNode))
+		g.Output.WriteString(g.compileRules(g.curNode.SelectorText, g.curNode))
 	}
 }
 
-func (g *Compiler) genRules(selector string, node ast.Selector) string {
+func (g *Compiler) compileRules(selector string, node ast.Selector) string {
 	var css strings.Builder
 	css.WriteString(selector + "{")
 
@@ -30,9 +32,20 @@ func (g *Compiler) genRules(selector string, node ast.Selector) string {
 	}
 
 	for _, nested := range node.Nested {
-		g.Output.WriteString(g.genRules(selector+" "+nested.SelectorText, nested))
+		g.Output.WriteString(g.compileRules(selector+" "+nested.SelectorText, nested))
 	}
 
 	css.WriteString("}")
 	return css.String()
+}
+
+//Compile is a helper function that will
+func Compile(input []byte) strings.Builder {
+	p := parser.New(lexer.New(input))
+	tree := p.ParseProgram()
+
+	generator := &Compiler{Program: tree}
+	generator.Compile()
+
+	return generator.Output
 }
