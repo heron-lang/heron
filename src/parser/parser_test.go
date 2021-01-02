@@ -9,11 +9,7 @@ import (
 func Test_ParseProgram(t *testing.T) {
 	l := lexer.New([]byte(`
 	ul {
-		li {
-			color: red;
-		}
-
-		background-color: blue;
+		transition: color 1s;
 	}`))
 
 	p := New(l)
@@ -24,21 +20,11 @@ func Test_ParseProgram(t *testing.T) {
 			SelectorText: "ul",
 			Rules: []ast.Rule{
 				{
-					Name:  "background-color",
-					Value: "blue",
+					Name:  "transition",
+					Value: " color 1s",
 				},
 			},
-			Nested: []ast.Selector{
-				{
-					SelectorText: "li",
-					Rules: []ast.Rule{
-						{
-							Name:  "color",
-							Value: "red",
-						},
-					},
-				},
-			},
+			Nested: []ast.Selector{},
 		},
 	}
 

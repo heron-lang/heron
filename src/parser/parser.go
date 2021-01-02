@@ -96,13 +96,17 @@ func (p *Parser) parseRule() (rule ast.Rule, err *errors.Error) {
 	rule.Name = p.curToken.Literal
 
 	p.nextToken() //COLON
-	p.nextToken() //RULE VALUE
 
-	if err = p.expectToken(token.IDENT); err != nil {
-		return
+	for p.peekToken.Type != token.EOS {
+		p.nextToken() //RULE VALUE
+
+		if err = p.expectToken(token.IDENT); err != nil {
+			return
+		}
+
+		rule.Value += " " + p.curToken.Literal
 	}
 
-	rule.Value = p.curToken.Literal
 	p.nextToken() //SEMICOLON
 	p.nextToken() //RULE NAME
 

@@ -62,8 +62,6 @@ func (l *Lexer) NextToken() token.Token {
 		tok = l.newToken(token.COLON)
 	case ';':
 		tok = l.newToken(token.EOS)
-	//case '\n':
-	//	tok = l.newToken(token.EOS)
 	case 0:
 		tok.Literal = "EOF"
 		tok.Type = token.EOF

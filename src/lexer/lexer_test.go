@@ -45,7 +45,7 @@ func TestEOS(t *testing.T) {
 func TestNumbers(t *testing.T) {
 	input := `
 		selector:hover {
-			font: 100%
+			transition: color 1s;
 		}	
 	`
 
@@ -55,9 +55,11 @@ func TestNumbers(t *testing.T) {
 		{Literal: "hover", Type: token.IDENT},
 		{Literal: "{", Type: token.LBRACE},
 
-		{Literal: "font", Type: token.IDENT},
+		{Literal: "transition", Type: token.IDENT},
 		{Literal: ":", Type: token.COLON},
-		{Literal: "100%", Type: token.IDENT},
+		{Literal: "color", Type: token.IDENT},
+		{Literal: "1s", Type: token.IDENT},
+		{Literal: ";", Type: token.EOS},
 
 		{Literal: "}", Type: token.RBRACE},
 	}
