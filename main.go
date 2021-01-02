@@ -11,7 +11,7 @@ import (
 var outputName string
 
 func main() {
-	if len(os.Args) != 3 {
+	if len(os.Args) != 2 {
 		fmt.Println("Missing the input and output arguments. The command should look like this: heron <input> <output>")
 		return
 	}
