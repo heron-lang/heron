@@ -53,7 +53,7 @@ and add it to your [PATH](https://katiek2.github.io/path-doc/)
 ## Usage
 
 ```yaml
-input.he
+demo.he
 ```
 
 <pre><code>
@@ -73,13 +73,13 @@ command-line
 ```
 
 ```bash
-heron input.he output.css
+heron demo.he
 ```
 
-Heron will automatically create `output.css` if the output file is not found
+Heron will automatically create `demo.css` if the output file is not found
 
 ```yaml
-output.css
+demo.css
 ```
 
 ```css
