@@ -40,7 +40,6 @@ func (p *Parser) ParseProgram() *ast.Program {
 		}
 
 		program.Rules = append(program.Rules, selector)
-		p.nextToken()
 	}
 
 	return program

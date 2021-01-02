@@ -10,6 +10,10 @@ func Test_ParseProgram(t *testing.T) {
 	l := lexer.New([]byte(`
 	ul {
 		transition: color 1s;
+	}
+
+	ul:hover {
+		color: red;
 	}`))
 
 	p := New(l)
@@ -25,6 +29,15 @@ func Test_ParseProgram(t *testing.T) {
 				},
 			},
 			Nested: []ast.Selector{},
+		},
+		{
+			SelectorText: "ul:hover",
+			Rules: []ast.Rule{
+				{
+					Name:  "color",
+					Value: " red",
+				},
+			},
 		},
 	}
 
