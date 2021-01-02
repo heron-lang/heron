@@ -8,11 +8,15 @@ import (
 	"strings"
 )
 
+var outputName string
+
 func main() {
 	if len(os.Args) != 3 {
 		fmt.Println("Missing the input and output arguments. The command should look like this: heron <input> <output>")
 		return
 	}
+
+	outputName = strings.TrimSuffix(os.Args[1], ".he") + ".css"
 
 	var inputFile, err = ioutil.ReadFile(os.Args[1])
 	if err != nil {
@@ -29,9 +33,9 @@ func main() {
 }
 
 func createOutFile() {
-	_, err := os.Stat(os.Args[2])
+	_, err := os.Stat(outputName)
 	if os.IsNotExist(err) {
-		var file, err = os.Create(os.Args[2])
+		var file, err = os.Create(outputName)
 
 		fmt.Println("That output file was not found, creating it...")
 
@@ -46,7 +50,7 @@ func createOutFile() {
 }
 
 func writeOut(output strings.Builder) {
-	file, err := os.OpenFile(os.Args[2], os.O_RDWR, 0644)
+	file, err := os.OpenFile(outputName, os.O_RDWR, 0644)
 	fmt.Println("Writing output...")
 
 	if err != nil {
