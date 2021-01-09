@@ -4,6 +4,7 @@ import (
 	"heron/src/ast"
 	"heron/src/lexer"
 	"heron/src/parser"
+	"os"
 	"strings"
 )
 
@@ -39,9 +40,9 @@ func (g *Compiler) compileRules(selector string, node ast.Selector) string {
 	return css.String()
 }
 
-//Compile is a helper function that will
+//Compile is a helper function that will use all packages to compile Heron code
 func Compile(input []byte) strings.Builder {
-	p := parser.New(lexer.New(input))
+	p := parser.New(lexer.New(input), os.Args[1])
 	tree := p.ParseProgram()
 
 	generator := &Compiler{Program: tree}

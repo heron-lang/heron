@@ -6,19 +6,23 @@ import (
 	"heron/src/errors"
 	"heron/src/lexer"
 	"heron/src/token"
+	"io/ioutil"
+	"path"
+	"path/filepath"
 )
 
 //Parser represents the program parser
 type Parser struct {
-	l *lexer.Lexer
+	l       *lexer.Lexer
+	program *ast.Program
 
 	curToken  token.Token
 	peekToken token.Token
 }
 
 //New creates a new parser
-func New(l *lexer.Lexer) *Parser {
-	p := &Parser{l: l}
+func New(l *lexer.Lexer, fileName string) *Parser {
+	p := &Parser{l: l, program: &ast.Program{FileName: fileName}}
 
 	//read two so that curToken and peekToken are both set
 	p.nextToken()
@@ -29,20 +33,79 @@ func New(l *lexer.Lexer) *Parser {
 
 //ParseProgram creates the programs AST (Abstract Syntax Tree)
 func (p *Parser) ParseProgram() *ast.Program {
-	program := &ast.Program{}
-	program.Rules = []ast.Selector{} //makes sure that the rules are not null
-
 	for p.curToken.Type != token.EOF {
-		selector, err := p.parseSelector()
+		switch p.curToken.Type {
+		case token.IDENT:
+			selector, err := p.parseSelector()
 
-		if err != nil {
-			err.Print()
+			if err != nil {
+				err.Print()
+			}
+
+			p.program.Rules = append(p.program.Rules, selector)
+		case token.ATRULE:
+			p.parseAtRule()
 		}
-
-		program.Rules = append(program.Rules, selector)
 	}
 
-	return program
+	return p.program
+}
+
+func (p *Parser) parseAtRule() (err *errors.Error) {
+	p.nextToken() //IDENT
+
+	if err = p.expectToken(token.IDENT); err != nil {
+		return
+	}
+
+	switch p.curToken.Literal {
+	case "import":
+		p.nextToken() //STRING
+
+		if err = p.expectToken(token.STRING); err != nil {
+			return
+		}
+
+		absolutePath, pathError := filepath.Abs(path.Join(path.Dir(p.program.FileName), p.curToken.Literal))
+
+		if pathError != nil {
+			err = &errors.Error{
+				Msg:  "we had some trouble parsing that path",
+				Type: errors.ImportError,
+				Loc:  p.curToken.Loc,
+			}
+
+			err.Print()
+			return
+		}
+
+		imported, fileError := ioutil.ReadFile(absolutePath)
+
+		if fileError != nil {
+			err = &errors.Error{
+				Msg:  fmt.Sprintf("we had some trouble fetching '%v'\n\t%v", p.curToken.Literal, fileError.Error()),
+				Type: errors.ImportError,
+				Loc:  p.curToken.Loc,
+			}
+			return
+		}
+
+		p2 := New(lexer.New(imported), p.curToken.Literal)
+		p2.ParseProgram()
+
+		p.program.Imports = append(p.program.Imports, *p2.program)
+
+		p.nextToken() //EOS
+
+		if err = p.expectToken(token.EOS); err != nil {
+			return
+		}
+
+		p.nextToken() //SKIP OVER EOS
+		break
+	}
+
+	return
 }
 
 func (p *Parser) parseSelector() (selector ast.Selector, err *errors.Error) {

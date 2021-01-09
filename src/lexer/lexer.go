@@ -1,6 +1,7 @@
 package lexer
 
 import (
+	"fmt"
 	"heron/src/errors"
 	"heron/src/token"
 	"strings"
@@ -62,6 +63,31 @@ func (l *Lexer) NextToken() token.Token {
 		tok = l.newToken(token.COLON)
 	case ';':
 		tok = l.newToken(token.EOS)
+	case '@':
+		tok = l.newToken(token.ATRULE)
+	case '"', '\'':
+		stringStart := l.ch
+		l.readChar() //skip initial start of string
+
+		tok.Type = token.STRING
+		tok.Literal = l.eat(func() bool {
+			if l.ch == 0 {
+				err := errors.Error{
+					Type: errors.SyntaxError,
+					Msg:  fmt.Sprintf("unexpected EOF, expected %v", token.STRING),
+					Loc:  l.loc,
+				}
+
+				err.Print()
+				return false
+			}
+
+			return l.ch != stringStart
+		})
+
+		l.readChar() //skip end of string
+
+		return tok
 	case 0:
 		tok.Literal = "EOF"
 		tok.Type = token.EOF

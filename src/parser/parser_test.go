@@ -3,21 +3,27 @@ package parser
 import (
 	"heron/src/ast"
 	"heron/src/lexer"
+	"io/ioutil"
 	"testing"
 )
 
-func Test_ParseProgram(t *testing.T) {
-	l := lexer.New([]byte(`
+func TestImports(t *testing.T) {
+	input := `
+		@import 'test_import.he';
+	`
+
+	createParserTest(t, input, []ast.Selector{})
+}
+
+func TestSpaces(t *testing.T) {
+	input := `
 	ul {
 		transition: color 1s;
 	}
 
 	ul:hover {
 		color: red;
-	}`))
-
-	p := New(l)
-	tree := p.ParseProgram()
+	}`
 
 	expected := []ast.Selector{
 		{
@@ -41,9 +47,65 @@ func Test_ParseProgram(t *testing.T) {
 		},
 	}
 
+	createParserTest(t, input, expected)
+}
+
+func TestImport(t *testing.T) {
+	createImportTest(t, `
+		@import "test_import.he";
+
+		p {
+			color: blue;
+		}
+	`, []ast.Selector{
+		{
+			SelectorText: "p",
+			Rules: []ast.Rule{
+				{
+					Name: "color",
+					Value: " blue",
+				},
+			},
+		},
+	}, []ast.Selector{
+		{
+			SelectorText: "button",
+			Rules: []ast.Rule{
+				{
+					Name:  "background-color",
+					Value: " blue",
+				},
+			},
+		},
+	}, "test_import.he")
+}
+
+func createImportTest(t *testing.T, input string, expected []ast.Selector, expectedImport []ast.Selector, importName string) {
+	p := createParserTest(t, input, expected)
+
+	if len(p.Imports) == 0 {
+		t.Error("not enough imported files")
+	}
+
+	file, err := ioutil.ReadFile(importName)
+	if err != nil {
+		t.Error("there was an error opening that imported file")
+	}
+
+	createParserTest(t, string(file), expectedImport)
+}
+
+func createParserTest(t *testing.T, input string, expected []ast.Selector) *ast.Program {
+	l := lexer.New([]byte(input))
+	p := New(l, "test")
+
+	tree := p.ParseProgram()
+
 	for i, node := range tree.Rules {
 		testSelector(t, tree, expected, i, node)
 	}
+
+	return p.program
 }
 
 func testSelector(t *testing.T, tree *ast.Program, expected []ast.Selector, i int, node ast.Selector) {

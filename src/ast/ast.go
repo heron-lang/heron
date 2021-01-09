@@ -4,7 +4,9 @@ import "heron/src/token"
 
 //Program contains all the abstract syntax tree nodes
 type Program struct {
-	Rules []Selector
+	FileName string
+	Imports  []Program
+	Rules    []Selector
 }
 
 //Rule represents the key-value pair of a CSS property
