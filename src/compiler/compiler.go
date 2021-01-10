@@ -22,6 +22,14 @@ func (g *Compiler) Compile() {
 
 		g.Output.WriteString(g.compileRules(g.curNode.SelectorText, g.curNode))
 	}
+
+	if len(g.Program.Imports) > 0 {
+		for _, imported := range g.Program.Imports {
+			compiler := &Compiler{Program: &imported}
+			compiler.Compile()
+			g.Output.WriteString(compiler.Output.String())
+		}
+	}
 }
 
 func (g *Compiler) compileRules(selector string, node ast.Selector) string {
