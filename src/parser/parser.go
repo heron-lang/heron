@@ -44,7 +44,11 @@ func (p *Parser) ParseProgram() *ast.Program {
 
 			p.program.Rules = append(p.program.Rules, selector)
 		case token.ATRULE:
-			p.parseAtRule()
+			err := p.parseAtRule()
+
+			if err != nil {
+				err.Print()
+			}
 		}
 	}
 
@@ -74,19 +78,20 @@ func (p *Parser) parseAtRule() (err *errors.Error) {
 				Type: errors.ImportError,
 				Loc:  p.curToken.Loc,
 			}
-
-			err.Print()
+			
 			return
 		}
 
 		imported, fileError := ioutil.ReadFile(absolutePath)
 
 		if fileError != nil {
+			goError := fileError.Error() //check what Go has to say about the error
 			err = &errors.Error{
-				Msg:  fmt.Sprintf("we had some trouble fetching '%v'\n\t%v", p.curToken.Literal, fileError.Error()),
+				Msg:  fmt.Sprintf("we had some trouble fetching '%v'\n\t%v", p.curToken.Literal, goError[:len(goError)-1] /*removes trailing newline*/),
 				Type: errors.ImportError,
 				Loc:  p.curToken.Loc,
 			}
+
 			return
 		}
 
