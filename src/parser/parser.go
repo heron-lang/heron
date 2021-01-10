@@ -70,7 +70,7 @@ func (p *Parser) parseAtRule() (err *errors.Error) {
 			return
 		}
 
-		absolutePath, pathError := filepath.Abs(path.Join(path.Dir(p.program.FileName), p.curToken.Literal))
+		absolutePath, pathError := filepath.Abs(path.Join(filepath.Dir(p.program.FileName), p.curToken.Literal))
 
 		if pathError != nil {
 			err = &errors.Error{
@@ -78,7 +78,7 @@ func (p *Parser) parseAtRule() (err *errors.Error) {
 				Type: errors.ImportError,
 				Loc:  p.curToken.Loc,
 			}
-			
+
 			return
 		}
 
@@ -95,7 +95,8 @@ func (p *Parser) parseAtRule() (err *errors.Error) {
 			return
 		}
 
-		p2 := New(lexer.New(imported), p.curToken.Literal)
+		//filepath.Rel(absolutePath, p.curToken.Literal)
+		p2 := New(lexer.New(imported), absolutePath)
 		p2.ParseProgram()
 
 		p.program.Imports = append(p.program.Imports, *p2.program)
