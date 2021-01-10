@@ -2,8 +2,8 @@ package lexer
 
 import (
 	"fmt"
-	"heron/src/errors"
-	"heron/src/token"
+	"github.com/poseidoncoder/heron/src/errors"
+	"github.com/poseidoncoder/heron/src/token"
 	"strings"
 )
 

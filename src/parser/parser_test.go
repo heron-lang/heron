@@ -1,8 +1,8 @@
 package parser
 
 import (
-	"heron/src/ast"
-	"heron/src/lexer"
+	"github.com/poseidoncoder/heron/src/ast"
+	"github.com/poseidoncoder/heron/src/lexer"
 	"io/ioutil"
 	"testing"
 )

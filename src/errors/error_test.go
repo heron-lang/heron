@@ -1,7 +1,7 @@
 package errors
 
 import (
-	"heron/src/token"
+	"github.com/poseidoncoder/heron/src/token"
 	"testing"
 )
 

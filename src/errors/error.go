@@ -2,7 +2,7 @@ package errors
 
 import (
 	"fmt"
-	"heron/src/token"
+	"github.com/poseidoncoder/heron/src/token"
 	"os"
 )
 

@@ -1,6 +1,6 @@
 package ast
 
-import "heron/src/token"
+import "github.com/poseidoncoder/heron/src/token"
 
 type (
 	//Program contains all the abstract syntax tree nodes
