@@ -4,7 +4,6 @@ import (
 	"github.com/poseidoncoder/heron/src/ast"
 	"github.com/poseidoncoder/heron/src/lexer"
 	"github.com/poseidoncoder/heron/src/parser"
-	"os"
 	"strings"
 )
 
@@ -49,8 +48,8 @@ func (g *Compiler) compileRules(selector string, node ast.Selector) string {
 }
 
 //Compile is a helper function that will use all packages to compile Heron code
-func Compile(input []byte) strings.Builder {
-	p := parser.New(lexer.New(input), os.Args[1])
+func Compile(input []byte, fileName string) strings.Builder {
+	p := parser.New(lexer.New(input), fileName)
 	tree := p.ParseProgram()
 
 	generator := &Compiler{Program: tree}
