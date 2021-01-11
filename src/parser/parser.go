@@ -56,17 +56,13 @@ func (p *Parser) ParseProgram() *ast.Program {
 }
 
 func (p *Parser) parseAtRule() (err *errors.Error) {
-	p.nextToken() //IDENT
-
-	if err = p.expectToken(token.IDENT); err != nil {
+	if err = p.expectPeekToken(token.IDENT); err != nil {
 		return
 	}
 
 	switch p.curToken.Literal {
 	case "import":
-		p.nextToken() //STRING
-
-		if err = p.expectToken(token.STRING); err != nil {
+		if err = p.expectPeekToken(token.STRING); err != nil {
 			return
 		}
 
@@ -95,15 +91,12 @@ func (p *Parser) parseAtRule() (err *errors.Error) {
 			return
 		}
 
-		//filepath.Rel(absolutePath, p.curToken.Literal)
 		p2 := New(lexer.New(imported), absolutePath)
 		p2.ParseProgram()
 
 		p.program.Imports = append(p.program.Imports, *p2.program)
 
-		p.nextToken() //EOS
-
-		if err = p.expectToken(token.EOS); err != nil {
+		if err = p.expectPeekToken(token.EOS); err != nil {
 			return
 		}
 
@@ -119,18 +112,22 @@ func (p *Parser) parseSelector() (selector ast.Selector, err *errors.Error) {
 		if p.curToken.Type == token.COLON || p.curToken.Type == token.IDENT {
 			selector.SelectorText += p.curToken.Literal
 		} else {
-			err = p.newError(fmt.Sprintf("unexpected %v, expected selector", p.curToken.Type))
+			err = &errors.Error{
+				Type: errors.SyntaxError,
+				Msg:  fmt.Sprintf("unexpected %v, expected selector text", p.curToken.Type),
+				Loc:  p.curToken.Loc,
+			}
+
 			return
 		}
 
 		p.nextToken()
 	}
 
-	if err = p.expectToken(token.LBRACE); err != nil {
+	if err = p.expectCurToken(token.LBRACE); err != nil {
 		return
 	}
 
-	p.nextToken()                         //RULE NAME
 	for p.curToken.Type != token.RBRACE { //Parse rule until it meets }
 		switch p.peekToken.Type {
 		case token.COLON:
@@ -142,7 +139,12 @@ func (p *Parser) parseSelector() (selector ast.Selector, err *errors.Error) {
 			nested, err = p.parseSelector()
 			selector.Nested = append(selector.Nested, nested)
 		default:
-			err = p.newError(fmt.Sprintf("unexpected %v, expected a colon or right brace", p.peekToken.Type))
+			err = &errors.Error{
+				Type: errors.SyntaxError,
+				Msg:  fmt.Sprintf("unexpected %v, expected a colon or closing brace", p.peekToken.Type),
+				Loc:  p.peekToken.Loc,
+			}
+
 			return
 		}
 
@@ -151,24 +153,20 @@ func (p *Parser) parseSelector() (selector ast.Selector, err *errors.Error) {
 		}
 	}
 
-	p.nextToken() //RULE NAME (skips RBRACE)
+	p.nextToken()
 
 	return
 }
 
 func (p *Parser) parseRule() (rule ast.Rule, err *errors.Error) {
-	if err = p.expectToken(token.IDENT); err != nil {
+	rule.Name = p.curToken.Literal
+
+	if err = p.expectPeekToken(token.COLON); err != nil {
 		return
 	}
 
-	rule.Name = p.curToken.Literal
-
-	p.nextToken() //COLON
-
 	for p.peekToken.Type != token.EOS {
-		p.nextToken() //RULE VALUE
-
-		if err = p.expectToken(token.IDENT); err != nil {
+		if err = p.expectPeekToken(token.IDENT); err != nil {
 			return
 		}
 
@@ -181,20 +179,25 @@ func (p *Parser) parseRule() (rule ast.Rule, err *errors.Error) {
 	return
 }
 
-func (p *Parser) expectToken(expected token.TokenType) *errors.Error {
-	if p.curToken.Type != expected {
-		return p.newError(fmt.Sprintf("unexpected %v, expected %v", p.curToken.Type, expected))
-	}
-
-	return nil
+func (p *Parser) expectCurToken(expected token.TokenType) *errors.Error {
+	return p.expectToken(p.curToken, expected)
 }
 
-func (p *Parser) newError(msg string) *errors.Error {
-	return &errors.Error{
-		Msg:  msg,
-		Loc:  p.curToken.Loc,
-		Type: errors.SyntaxError,
+func (p *Parser) expectPeekToken(expected token.TokenType) *errors.Error {
+	return p.expectToken(p.peekToken, expected)
+}
+
+func (p *Parser) expectToken(tok token.Token, expected token.TokenType) *errors.Error {
+	if tok.Type != expected {
+		return &errors.Error{
+			Msg: fmt.Sprintf("unexpected %v, expected %v", tok.Type, expected),
+			Type: errors.SyntaxError,
+			Loc: tok.Loc,
+		}
 	}
+
+	p.nextToken()
+	return nil
 }
 
 func (p *Parser) nextToken() {
