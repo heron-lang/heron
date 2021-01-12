@@ -2,13 +2,16 @@ package errors
 
 import (
 	"fmt"
-	"heron/src/token"
+	"github.com/poseidoncoder/heron/src/token"
 	"os"
 )
 
 const (
-	//SyntaxError is an ErrorType that's intended for errors related to syntax/grammar
-	SyntaxError = "Syntax Error"
+	//SyntaxError is used when the Heron code does not match our syntax
+	SyntaxError = "SyntaxError"
+
+	//ImportError is thrown when the compiler fails to fetch the specified file
+	ImportError = "ImportError"
 )
 
 //ErrorType represents the type of error

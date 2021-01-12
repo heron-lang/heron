@@ -2,7 +2,7 @@ package lexer
 
 import (
 	"fmt"
-	"heron/src/token"
+	"github.com/poseidoncoder/heron/src/token"
 	"testing"
 )
 
@@ -13,8 +13,6 @@ func TestComments(t *testing.T) {
 	*/
 
 	//ignore this as well`
-
-	//TODO: add support for rule value that include whitespace
 
 	createTest(t, input, []token.Token{})
 }
@@ -40,6 +38,17 @@ func TestEOS(t *testing.T) {
 	}
 
 	createTest(t, input, expected)
+}
+
+func TestImports(t *testing.T) {
+	expected := []token.Token{
+		{Literal: "@", Type: token.ATRULE},
+		{Literal: "import", Type: token.IDENT},
+		{Literal: "hello world", Type: token.STRING},
+		{Literal: ";", Type: token.EOS},
+	}
+
+	createTest(t, "@import 'hello world';", expected)
 }
 
 func TestNumbers(t *testing.T) {

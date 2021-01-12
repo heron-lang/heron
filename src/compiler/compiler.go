@@ -1,9 +1,9 @@
 package compiler
 
 import (
-	"heron/src/ast"
-	"heron/src/lexer"
-	"heron/src/parser"
+	"github.com/poseidoncoder/heron/src/ast"
+	"github.com/poseidoncoder/heron/src/lexer"
+	"github.com/poseidoncoder/heron/src/parser"
 	"strings"
 )
 
@@ -20,6 +20,14 @@ func (g *Compiler) Compile() {
 		g.curNode = selector
 
 		g.Output.WriteString(g.compileRules(g.curNode.SelectorText, g.curNode))
+	}
+
+	if len(g.Program.Imports) > 0 {
+		for _, imported := range g.Program.Imports {
+			compiler := &Compiler{Program: &imported}
+			compiler.Compile()
+			g.Output.WriteString(compiler.Output.String())
+		}
 	}
 }
 
@@ -39,9 +47,9 @@ func (g *Compiler) compileRules(selector string, node ast.Selector) string {
 	return css.String()
 }
 
-//Compile is a helper function that will
-func Compile(input []byte) strings.Builder {
-	p := parser.New(lexer.New(input))
+//Compile is a helper function that will use all packages to compile Heron code
+func Compile(input []byte, fileName string) strings.Builder {
+	p := parser.New(lexer.New(input), fileName)
 	tree := p.ParseProgram()
 
 	generator := &Compiler{Program: tree}
