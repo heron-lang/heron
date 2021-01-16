@@ -1,9 +1,9 @@
 package compiler
 
 import (
-	"github.com/poseidoncoder/heron/src/ast"
-	"github.com/poseidoncoder/heron/src/lexer"
-	"github.com/poseidoncoder/heron/src/parser"
+	"github.com/heron-lang/heron/src/ast"
+	"github.com/heron-lang/heron/src/lexer"
+	"github.com/heron-lang/heron/src/parser"
 	"strings"
 )
 

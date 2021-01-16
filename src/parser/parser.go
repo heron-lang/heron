@@ -2,10 +2,10 @@ package parser
 
 import (
 	"fmt"
-	"github.com/poseidoncoder/heron/src/ast"
-	"github.com/poseidoncoder/heron/src/errors"
-	"github.com/poseidoncoder/heron/src/lexer"
-	"github.com/poseidoncoder/heron/src/token"
+	"github.com/heron-lang/heron/src/ast"
+	"github.com/heron-lang/heron/src/errors"
+	"github.com/heron-lang/heron/src/lexer"
+	"github.com/heron-lang/heron/src/token"
 	"io/ioutil"
 	"path"
 	"path/filepath"

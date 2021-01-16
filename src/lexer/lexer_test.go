@@ -2,7 +2,7 @@ package lexer
 
 import (
 	"fmt"
-	"github.com/poseidoncoder/heron/src/token"
+	"github.com/heron-lang/heron/src/token"
 	"testing"
 )
 

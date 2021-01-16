@@ -1,12 +1,12 @@
 <div align="center">
 
-<img alt='heron' src="https://raw.githubusercontent.com/PoseidonCoder/heron/main/small_logo.png" />
+<img alt='heron' src="https://raw.githubusercontent.com/heron-lang/heron/main/small_logo.png" />
 
-![GoV1.15](https://img.shields.io/github/go-mod/go-version/PoseidonCoder/heron?style=for-the-badge)
-![license: GPL-3.0](https://img.shields.io/github/license/PoseidonCoder/heron?style=for-the-badge)
-![](https://img.shields.io/github/commit-activity/m/PoseidonCoder/heron.svg?style=for-the-badge)
-![](https://img.shields.io/github/last-commit/PoseidonCoder/heron.svg?style=for-the-badge)
-![codacy grade: B](https://img.shields.io/codacy/grade/1ee92d90d52b4b6e822345c7d5462be2?style=for-the-badge)
+![GoV1.15](https://img.shields.io/github/go-mod/go-version/heron-lang/heron?style=for-the-badge)
+![license: GPL-3.0](https://img.shields.io/github/license/heron-lang/heron?style=for-the-badge)
+![](https://img.shields.io/github/commit-activity/m/heron-lang/heron?style=for-the-badge)
+![](https://img.shields.io/github/last-commit/heron-lang/heron.svg?style=for-the-badge)
+![codacy grade: B](https://img.shields.io/codacy/grade/c8643d5a5959451f91d0f9a660651917?style=for-the-badge)
 ![contributions are welcome](https://img.shields.io/badge/contributions-welcome-orange.svg?style=for-the-badge)
 
 # a *powerful* CSS preprocessor

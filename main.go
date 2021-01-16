@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/poseidoncoder/heron/src/compiler"
+	"github.com/heron-lang/heron/src/compiler"
 	"io/ioutil"
 	"os"
 	"strings"
